@@ -37,7 +37,7 @@ export function megjelenit(lista){
     for (let i = 0; i < lista.length; i++){
         kartya+= "<div>"
         kartya+=`<h3>${lista[i].nev}</h3>`
-        kartya+= `<p> Fajta: ${lista[i].fajta}, Magasság: ${lista[i].magassag} m, Életkor: ${lista[i].eletkor} év</p>`
+        kartya+= `<p> Fajta: ${lista[i].fajta}, <br>Magasság: ${lista[i].magassag} m, <br>Életkor: ${lista[i].eletkor} év</p>`
         kartya+="</div>"
         
     }  
@@ -49,29 +49,41 @@ export function folevisz(lista) {
     const divek = document.querySelectorAll(".tartalom div");
 
     divek.forEach(function(div) {
-        div.addEventListener("click", function() {
+        div.addEventListener("mouseover", function() {
             div.classList.add("kiv");
+        });
+        div.addEventListener("mouseleave", function() {
+            div.classList.remove("kiv");
         });
     });
 }
 
 const kivalasztottak = []
-export function kivalaszt(lista){
-    const divek= document.querySelectorAll(".tartalom div")
-    for (let index = 0; index < divek.length; index++) {
-        divek[index].addEventListener("click", function(){
-            //const masoltDivek=document.querySelectorAll(".tartalom div")
-            if (kivalasztottak.indexOf(lista[index].nev===-1)){
-                kivalasztottak.push(lista[index].nev)
+
+export function kivalaszt(lista) {
+    const kivElemek = document.querySelector(".kiv");
+    const kartyaDivek = document.querySelectorAll(".tartalom div");
+    const kivalasztottElemek = {};
+
+    for (let i = 0; i < kartyaDivek.length; i++) {
+        kartyaDivek[i].addEventListener("click", function() {
+            const nev = lista[i].nev;
+            /* if (kivalasztottak.indexOf(nev) === -1) {
+                kivalasztottak.push(nev);
+                console.log(kivalasztottak);
+                kivElemek.innerHTML += `<div><p>${nev}</p></div>`;
+            } */
+
+            if (kivalasztottElemek[nev]) {
+                kivalasztottElemek[nev]++;
+            } else {
+                kivalasztottElemek[nev] = 1;
             }
-            console.log(kivalasztottak)
-            //masoltDivek.innerHTML=kivalasztottak
-        })
+            kivElemek.innerHTML = "";
+            for (const elem in kivalasztottElemek) {
+                kivElemek.innerHTML += `<div><p>${elem} (${kivalasztottElemek[elem]} darab)</p></div>`;
+            }
+        });
     }
 }
- 
-function listaKiir(lista){
-    const ELEM = document.querySelector(".tartalom");
-    ELEM.innerHTML = `<p>${lista}</p>`
-}
-listaKiir(kivalasztottak)
+

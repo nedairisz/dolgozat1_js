@@ -1,3 +1,11 @@
 .kiv{
     background-color: antiquewhite;
 }
+.tartalom {
+    display: flex; 
+    flex-wrap: wrap; 
+}
+
+.tartalom div {
+    margin: 5px; 
+}
